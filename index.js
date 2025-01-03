@@ -19,6 +19,10 @@ app.get("/halaman", (req, res) => {
   res.send("Halo halaman!");
 });
 
+app.use((req, res) => {
+  res.status(404).send("Page Not Found");
+});
+
 app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
