@@ -15,7 +15,8 @@ const auth = (req, res, next) => {
   if (password === "secret") {
     next();
   }
-  res.send("Anda Perlu Memasukan Password");
+  //   res.send("Anda Perlu Memasukan Password");
+  throw new Error("Anda Perlu Memasukan Password");
 };
 
 app.get("/", (req, res) => {
@@ -29,6 +30,14 @@ app.get("/halaman", (req, res) => {
 
 app.get("/admin", auth, (req, res) => {
   res.send("Selamat Datang Admin");
+});
+
+app.use((err, req, res, next) => {
+  console.log("*****************************");
+  console.log("************ERROR************");
+  console.log("*****************************");
+  console.log(err.message);
+  next();
 });
 
 app.use((req, res) => {
