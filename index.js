@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const ErrorHandler = require("./ErrorHandler");
 const app = express();
 
 app.use(morgan("dev"));
@@ -28,16 +29,29 @@ app.get("/halaman", (req, res) => {
   res.send("Halo halaman!");
 });
 
+app.get("/error", (req, res) => {
+  bird.fly();
+});
+
 app.get("/admin", auth, (req, res) => {
   res.send("Selamat Datang Admin");
 });
 
+app.get("/general/error", (req, res) => {
+  throw new ErrorHandler();
+});
+
+// app.use((err, req, res, next) => {
+//   console.log("*****************************");
+//   console.log("************ERROR************");
+//   console.log("*****************************");
+//   console.log(err.message);
+//   next();
+// });
+
 app.use((err, req, res, next) => {
-  console.log("*****************************");
-  console.log("************ERROR************");
-  console.log("*****************************");
-  console.log(err.message);
-  next();
+  const { status = 500, message = "Something went wrong" } = err;
+  res.status(status).send(message);
 });
 
 app.use((req, res) => {
