@@ -10,6 +10,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  const { password } = req.query;
+  if (password === "secret") {
+    next();
+  }
+  res.send("Anda Perlu Memasukan Password");
+});
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
